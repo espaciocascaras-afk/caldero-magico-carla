@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <title>✨ El Caldero Mágico de Carla ✨</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Georgia', serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; color: #2d3748; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%); border-radius: 20px; padding: 30px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 20px; border: 3px solid #ffd700; }
+        .header h1 { color: #fff; font-size: 2.5em; text-shadow: 3px 3px 6px rgba(0,0,0,0.4); margin-bottom: 10px; }
+        .subtitle { color: #fff; font-size: 1.2em; font-style: italic; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .points-badge { background: #ffd700; color: #19547b; padding: 15px 30px; border-radius: 50px; display: inline-block; font-weight: bold; font-size: 1.3em; margin: 15px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border: 2px solid #fff; }
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { flex: 1; min-width: 150px; padding: 15px 20px; background: #fff; border: none; border-radius: 15px; font-size: 1.1em; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-weight: bold; }
+        .tab-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .tab-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .content-section { display: none; animation: fadeIn 0.5s; }
+        .content-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .month-card { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 3px solid #ffd700; }
+        .month-title { color: #764ba2; font-size: 2em; margin-bottom: 15px; text-align: center; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+        .week-card { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 15px; padding: 20px; margin: 15px 0; cursor: pointer; transition: all 0.3s; border-left: 5px solid #667eea; }
+        .week-card:hover { transform: translateX(5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .week-card.completed { border-left-color: #48bb78; background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%); }
+        .week-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .week-title { font-size: 1.5em; color: #2d3748; font-weight: bold; }
+        .status-badge { padding: 8px 15px; border-radius: 20px; font-size: 0.9em; font-weight: bold; }
+        .status-badge.pending { background: #ffd700; color: #19547b; }
+        .status-badge.completed { background: #48bb78; color: white; }
+        .week-details { display: none; margin-top: 15px; padding-top: 15px; border-top: 2px solid rgba(102, 126, 234, 0.3); }
+        .week-details.show { display: block; }
+        .materials-list, .instructions, .info-box, .challenge-box { background: white; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        .materials-list h4 { color: #667eea; margin-bottom: 10px; }
+        .materials-list ul { list-style: none; padding-left: 0; }
+        .materials-list li { padding: 8px 0; padding-left: 25px; position: relative; }
+        .materials-list li:before { content: "✨"; position: absolute; left: 0; }
+        .instructions h4 { color: #764ba2; margin-bottom: 10px; }
+        .instructions ol { padding-left: 20px; }
+        .instructions li { padding: 5px 0; line-height: 1.6; }
+        .complete-btn { background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; border: none; padding: 15px 30px; border-radius: 50px; font-size: 1.1em; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s; }
+        .complete-btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .complete-btn:disabled { background: #cbd5e0; cursor: not-allowed; transform: none; }
+        .diary-section { background: white; padding: 20px; border-radius: 15px; margin: 10px 0; }
+        .diary-entry { background: #f7fafc; padding: 15px; border-radius: 10px; margin: 10px 0; border-left: 4px solid #667eea; }
+        textarea { width: 100%; min-height: 120px; padding: 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-family: 'Georgia', serif; font-size: 1em; resize: vertical; }
+        .save-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-size: 1em; font-weight: bold; margin-top: 10px; transition: all 0.3s; }
+        .save-btn:hover { transform: scale(1.05); }
+        .progress-bar { background: #e2e8f0; height: 30px; border-radius: 15px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { background: linear-gradient(90deg, #48bb78 0%, #38a169 100%); height: 100%; transition: width 0.5s; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
+        .achievements { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
+        .achievement { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; }
+        .achievement:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .achievement.locked { opacity: 0.5; filter: grayscale(100%); }
+        .achievement-icon { font-size: 3em; margin-bottom: 10px; }
+        .achievement-title { font-weight: bold; color: #2d3748; margin-bottom: 5px; }
+        .achievement-desc { font-size: 0.9em; color: #718096; }
+        @media (max-width: 768px) { body { padding: 10px; } .header h1 { font-size: 1.8em; } .tab-btn { min-width: 100%; } .week-header { flex-direction: column; align-items: flex-start; gap: 10px; } }
+        .emoji-large { font-size: 3em; text-align: center; margin: 20px 0; }
+        .info-box { background: #ebf8ff; border-left: 4px solid #4299e1; }
+        .info-box h4 { color: #2c5282; margin-bottom: 8px; }
+        .challenge-box { background: #fef5e7; border: 2px dashed #f39c12; }
+        .challenge-box h4 { color: #d68910; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ El Caldero Mágico de Carla ✨</h1>
+            <p class="subtitle">🧙‍♀️ Academia de Ciencia, Magia y Creatividad 🔬</p>
+            <div class="points-badge">⭐ Puntos: <span id="totalPoints">0</span> / 200</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressBar" style="width: 0%">0%</div></div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('current-month')">📅 Mes Actual</button>
+            <button class="tab-btn" onclick="showTab('diary')">📖 Mi Diario</button>
+            <button class="tab-btn" onclick="showTab('achievements')">🏆 Logros</button>
+        </div>
+
+        <div id="current-month" class="content-section active">
+            <div class="month-card">
+                <h2 class="month-title">🧪 MES 1: POCIONES Y TRANSFORMACIONES 🧪</h2>
+                <div class="emoji-large">🔮</div>
+
+                <div class="week-card" id="week1" onclick="toggleWeek('week1')">
+                    <div class="week-header">
+                        <div class="week-title">Semana 1: Pociones Cambiacolor</div>
+                        <span class="status-badge pending" id="status-week1">Pendiente</span>
+                    </div>
+                    <p>Descubre la magia de los indicadores químicos naturales</p>
+                    <div class="week-details" id="details-week1">
+                        <div class="materials-list">
+                            <h4>📦 Materiales en tu kit:</h4>
+                            <ul>
+                                <li>Indicador mágico (jugo de repollo morado)</li>
+                                <li>4 frascos pequeños transparentes</li>
+                                <li>Bicarbonato de sodio</li>
+                                <li>Vinagre blanco</li>
+                                <li>Jugo de limón</li>
+                                <li>Cucharas medidoras</li>
+                                <li>Etiquetas decorativas</li>
+                            </ul>
+                        </div>
+                        <div class="instructions">
+                            <h4>📋 Instrucciones:</h4>
+                            <ol>
+                                <li>Vierte el indicador mágico en cada frasco</li>
+                                <li>Frasco 1: añade bicarbonato</li>
+                                <li>Frasco 2: añade vinagre</li>
+                                <li>Frasco 3: añade limón</li>
+                                <li>Observa los cambios de color</li>
+                                <li>Registra en tu diario</li>
+                            </ol>
+                        </div>
+                        <div class="info-box">
+                            <h4>🧠 Explicación científica:</h4>
+                            <p>El repollo contiene antocianinas que cambian según el pH. ¡Es química!</p>
+                        </div>
+                        <div class="challenge-box">
+                            <h4>⚡ Desafío extra (+15 puntos):</h4>
+                            <p>Prueba con otros líquidos de casa y predice su acidez.</p>
+                        </div>
+                        <button class="complete-btn" onclick="completeWeek('week1', 25)">✅ Marcar completada (25 puntos)</button>
+                    </div>
+                </div>
+
+                <div class="week-card" id="week2" onclick="toggleWeek('week2')">
+                    <div class="week-header">
+                        <div class="week-title">Semana 2: Cristales Encantados</div>
+                        <span class="status-badge pending" id="status-week2">Pendiente</span>
+                    </div>
+                    <p>Cultiva cristales mágicos de colores</p>
+                    <div class="week-details" id="details-week2">
+                        <div class="materials-list">
+                            <h4>📦 Materiales:</h4>
+                            <ul>
+                                <li>Sal de Epsom</li>
+                                <li>Recipientes transparentes</li>
+                                <li>Colorantes</li>
+                                <li>Hilos y palitos</li>
+                                <li>Lupa</li>
+                            </ul>
+                        </div>
+                        <div class="instructions">
+                            <h4>📋 Instrucciones:</h4>
+                            <ol>
+                                <li>Disuelve sal en agua caliente</li>
+                                <li>Añade colorante</li>
+                                <li>Cuelga hilo en la solución</li>
+                                <li>Observa el crecimiento diario</li>
+                            </ol>
+                        </div>
+                        <div class="info-box">
+                            <h4>🧠 Ciencia:</h4>
+                            <p>Los cristales se forman al evaporarse el agua.</p>
+                        </div>
+                        <button class="complete-btn" onclick="completeWeek('week2', 25)">✅ Marcar completada (25 puntos)</button>
+                    </div>
+                </div>
+
+                <div class="week-card" id="week3" onclick="toggleWeek('week3')">
+                    <div class="week-header">
+                        <div class="week-title">Semana 3: Mensajes Invisibles</div>
+                        <span class="status-badge pending" id="status-week3">Pendiente</span>
+                    </div>
+                    <p>Comunicación secreta</p>
+                    <div class="week-details" id="details-week3">
+                        <div class="materials-list">
+                            <h4>📦 Materiales:</h4>
+                            <ul>
+                                <li>Jugo de limón</li>
+                                <li>Hisopos</li>
+                                <li>Papel</li>
+                                <li>Lámpara</li>
+                            </ul>
+                        </div>
+                        <button class="complete-btn" onclick="completeWeek('week3', 25)">✅ Marcar completada (25 puntos)</button>
+                    </div>
+                </div>
+
+                <div class="week-card" id="week4" onclick="toggleWeek('week4')">
+                    <div class="week-header">
+                        <div class="week-title">Semana 4: Slime Brillante</div>
+                        <span class="status-badge pending" id="status-week4">Pendiente</span>
+                    </div>
+                    <p>Crea slime mágico</p>
+                    <div class="week-details" id="details-week4">
+                        <div class="materials-list">
+                            <h4>📦 Materiales:</h4>
+                            <ul>
+                                <li>Cola blanca</li>
+                                <li>Detergente</li>
+                                <li>Brillantina</li>
+                                <li>Colorante</li>
+                            </ul>
+                        </div>
+                        <button class="complete-btn" onclick="completeWeek('week4', 25)">✅ Marcar completada (25 puntos)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="diary" class="content-section">
+            <div class="month-card">
+                <h2 class="month-title">📖 Mi Diario 📖</h2>
+                <div class="diary-section">
+                    <h3>✍️ Nueva entrada</h3>
+                    <select id="diaryExperiment" style="width:100%;padding:10px;margin:10px 0;border-radius:5px;">
+                        <option value="">Selecciona experimento...</option>
+                        <option>Semana 1: Pociones</option>
+                        <option>Semana 2: Cristales</option>
+                        <option>Semana 3: Mensajes</option>
+                        <option>Semana 4: Slime</option>
+                    </select>
+                    <textarea id="diaryWhat" placeholder="¿Qué ocurrió?"></textarea>
+                    <textarea id="diaryLearned" placeholder="¿Qué aprendí?"></textarea>
+                    <textarea id="diaryTheory" placeholder="Mi teoría mágica"></textarea>
+                    <button class="save-btn" onclick="saveDiary()">💾 Guardar</button>
+                </div>
+                <div id="diaryEntries"></div>
+            </div>
+        </div>
+
+        <div id="achievements" class="content-section">
+            <div class="month-card">
+                <h2 class="month-title">🏆 Mis Logros 🏆</h2>
+                <div class="achievements">
+                    <div class="achievement" id="achievement-1">
+                        <div class="achievement-icon">🧪</div>
+                        <div class="achievement-title">Primera Poción</div>
+                        <div class="achievement-desc">Completa tu primer experimento</div>
+                    </div>
+                    <div class="achievement locked" id="achievement-2">
+                        <div class="achievement-icon">📖</div>
+                        <div class="achievement-title">Escritora Mágica</div>
+                        <div class="achievement-desc">Escribe 5 entradas</div>
+                    </div>
+                    <div class="achievement locked" id="achievement-3">
+                        <div class="achievement-icon">⭐</div>
+                        <div class="achievement-title">Alumna Destacada</div>
+                        <div class="achievement-desc">Consigue 100 puntos</div>
+                    </div>
+                    <div class="achievement locked" id="achievement-4">
+                        <div class="achievement-icon">🔬</div>
+                        <div class="achievement-title">Científica Experta</div>
+                        <div class="achievement-desc">Completa todas las semanas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let totalPoints=0,completedWeeks=[],diaryEntries=[];
+        window.onload=function(){loadData();updateUI()};
+        function loadData(){const s=localStorage.getItem('calderoMagico');if(s){const d=JSON.parse(s);totalPoints=d.points||0;completedWeeks=d.completed||[];diaryEntries=d.diary||[]}}
+        function saveData(){localStorage.setItem('calderoMagico',JSON.stringify({points:totalPoints,completed:completedWeeks,diary:diaryEntries}))}
+        function updateUI(){document.getElementById('totalPoints').textContent=totalPoints;const p=Math.min((totalPoints/200)*100,100);const b=document.getElementById('progressBar');b.style.width=p+'%';b.textContent=Math.round(p)+'%';completedWeeks.forEach(w=>{const c=document.getElementById(w);if(c){c.classList.add('completed');const s=document.getElementById('status-'+w);s.textContent='Completada ✓';s.classList.remove('pending');s.classList.add('completed');const btn=c.querySelector('.complete-btn');if(btn){btn.disabled=true;btn.textContent='✓ Completada'}}});checkAchievements();displayDiaryEntries()}
+        function toggleWeek(w){document.getElementById('details-'+w).classList.toggle('show')}
+        function completeWeek(w,p){if(!completedWeeks.includes(w)){completedWeeks.push(w);totalPoints+=p;saveData();updateUI();alert('¡Felicidades! +'+p+' puntos 🎉')}}
+        function showTab(t){document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));document.getElementById(t).classList.add('active');document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active')}
+        function saveDiary(){const e=document.getElementById('diaryExperiment').value,w=document.getElementById('diaryWhat').value,l=document.getElementById('diaryLearned').value,t=document.getElementById('diaryTheory').value;if(!e||!w||!l||!t){alert('Completa todos los campos');return}diaryEntries.unshift({date:new Date().toLocaleDateString('es-ES'),experiment:e,what:w,learned:l,theory:t});saveData();document.getElementById('diaryExperiment').value='';document.getElementById('diaryWhat').value='';document.getElementById('diaryLearned').value='';document.getElementById('diaryTheory').value='';updateUI();alert('¡Guardado! 📖')}
+        function displayDiaryEntries(){const c=document.getElementById('diaryEntries');if(diaryEntries.length===0){c.innerHTML='<p style="text-align:center;color:#718096;padding:20px">Sin entradas aún</p>';return}c.innerHTML=diaryEntries.map(e=>`<div class="diary-entry"><div style="display:flex;justify-content:space-between"><strong style="color:#667eea">${e.experiment}</strong><span style="color:#718096;font-size:0.9em">${e.date}</span></div><p><strong>Qué ocurrió:</strong> ${e.what}</p><p><strong>Qué aprendí:</strong> ${e.learned}</p><p><strong>Teoría mágica:</strong> ${e.theory}</p></div>`).join('')}
+        function checkAchievements(){if(completedWeeks.length>=1)unlockAchievement('achievement-1');if(diaryEntries.length>=5)unlockAchievement('achievement-2');if(totalPoints>=100)unlockAchievement('achievement-3');if(completedWeeks.length>=4)unlockAchievement('achievement-4')}
+        function unlockAchievement(a){const e=document.getElementById(a);if(e&&e.classList.contains('locked'))e.classList.remove('locked')}
+    </script>
+</body>
+</html>
